@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: us-central1-docker.pkg.dev/gcp-test-472411/repo1/python-app
+  repository: us-central1-docker.pkg.dev/ultra-dominion-464010-e0/helmuday/python-app
   tag: "latest"
   pullPolicy: IfNotPresent
 
