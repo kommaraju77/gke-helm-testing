@@ -20,24 +20,24 @@ jobs:
       name: Authenticate to GCP via Workload Identity Federation
       uses: google-github-actions/auth@v3
       with:
-        workload_identity_provider: "projects/410150718166/locations/global/workloadIdentityPools/pool1/providers/github-provider1"
-        service_account: "github-actions@gcp-test-472411.iam.gserviceaccount.com"
+        workload_identity_provider: "projects/726366787795/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+        service_account: "github-actions@ultra-dominion-464010-e0.iam.gserviceaccount.com"
 
     - name: Configure Docker auth
       run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
     - name: Build & push Docker image
       run: |
-        IMAGE="us-central1-docker.pkg.dev/gcp-test-472411/repo1/python-app:latest"
+        IMAGE="us-central1-docker.pkg.dev/ultra-dominion-464010-e0/helmuday/python-app:latest"
         docker build -t $IMAGE .
         docker push $IMAGE
 
     - name: Get GKE credentials
       uses: google-github-actions/get-gke-credentials@v3
       with:
-        cluster_name: "gke"
+        cluster_name: "cluster-1"
         location: "us-central1-a"
-        project_id: "gcp-test-472411"
+        project_id: "ultra-dominion-464010-e0"
 
     - name: Install Helm
       uses: azure/setup-helm@v4
@@ -45,11 +45,9 @@ jobs:
     - name: Deploy via Helm
       run: |
         helm upgrade --install python-app ./python-app \
-          --set image.repository=us-central1-docker.pkg.dev/gcp-test-472411/repo1/python-app \
+          --set image.repository=us-central1-docker.pkg.dev/ultra-dominion-464010-e0/helmuday/python-app \
           --set image.tag=latest \
           --set image.tag=latest \
           --namespace default
 
-    - name: Force rollout restart
-      run: |
-        kubectl rollout restart deployment python-app -n default
+   
